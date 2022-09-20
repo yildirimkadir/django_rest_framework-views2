@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 # from rest_framework import mixins
 from rest_framework.generics import GenericAPIView,mixins, ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
 # Create your views here.
 
 
@@ -87,6 +88,13 @@ class StudentRUD(RetrieveUpdateDestroyAPIView):
 class StudentGRUD(ModelViewSet):
     queryset=Student.objects.all()
     serializer_class=StudentSerializer
+    
+    @action(detail=False,methods=['GET'])
+    def student_count(self,request):
+        count={
+            'student-count':self.queryset.count()
+        }
+        return Response(count)
 
 
 
