@@ -12,7 +12,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 # from rest_framework import mixins
-from rest_framework.generics import GenericAPIView,mixins
+from rest_framework.generics import GenericAPIView,mixins, ListCreateAPIView,RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 # Create your views here.
 
 
@@ -64,7 +65,7 @@ class StudentListCreate(mixins.ListModelMixin, mixins.CreateModelMixin, GenericA
             return self.list(request, *args, **kwargs)
         def post(self, request, *args, **kwargs):
             return self.create(request, *args, **kwargs)
-class StudentURD(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin,GenericAPIView):
+class StudentURD(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin,GenericAPIView): #URD demek Update Read Delete
         queryset=Student.objects.all()
         serializer_class= StudentSerializer
         def get(self, request, *args, **kwargs):
@@ -74,10 +75,18 @@ class StudentURD(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.Dest
         def delete(self, request, *args, **kwargs):
             return self.destroy(request, *args, **kwargs)
 
+class StudentLC(ListCreateAPIView):
+    queryset=Student.objects.all()
+    serializer_class= StudentSerializer
+    
+class StudentRUD(RetrieveUpdateDestroyAPIView):
+    queryset=Student.objects.all()
+    serializer_class= StudentSerializer
 
 
-
-
+class StudentGRUD(ModelViewSet):
+    queryset=Student.objects.all()
+    serializer_class=StudentSerializer
 
 
 
